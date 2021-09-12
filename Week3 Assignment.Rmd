@@ -2,31 +2,115 @@
 title: "Week3 Assignment"
 author: "Coffy Andrews-Guo"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 ```
 
-## R Markdown
+## R Character Manipulation and Date Processing 
 
-Using the 173 majors listed in fivethirtyeight.com’s College Majors dataset [https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], provide code that identifies the majors that contain either "DATA" or "STATISTICS"
+Question 1
+The 173 majors listed in fivethirtyeight.com’s College Majors dataset [https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], was pulled from [https://github.com/fivethirtyeight/data/blob/master/college-majors/majors-list.csv]
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r pull_csv_file, include=TRUE}
+library(readr)
 
-```{r cars}
-summary(cars)
+urlfile = "https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/majors-list.csv"
+
+majors <- read_csv(url(urlfile))
+spec(majors)
 ```
 
-## Including Plots
+Code identification of majors that contain either "DATA" or "STATISTICS"
 
-You can also embed plots, for example:
+```{r majors-DATA-STATISTICS}
+library(stringr)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+majors1 <- majors %>% 
+  filter(str_detect(majors$Major, "DATA") | str_detect(majors$Major, "STATISTICS"))
+majors1
 ```
 
+
+Question 2
+Write code that transforms the data below:
+
+[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+
+[13] "olive"        "salal berry"
+
+Into a format like this:
+
+c("bell pepper", "bilberry", "blackberry", "blood orange", "blueberry", "cantaloupe", "chili pepper", "cloudberry", "elderberry", "lime", "lychee", "mulberry", "olive", "salal berry")
+
+```{r data-transformation}
+
+x <- c("bell pepper", "bilberry", "blackberry", "blood orange", "blueberry", "cantaloupe", "chili pepper", "cloudberry", "elderberry", "lime", "lychee", "mulberry", "olive", "salal berry")
+print(x)
+```
+
+
+# The two exercises below are taken from R for Data Science, 14.3.5.1
+
+Question 3
+Describe, in words, what these expressions will match:
+
+(.)\1\1
+Response: This expression will match the same character appearing three times in a row.
+
+"(.)(.)\\2\\1"
+Response: This expression will match a pair of characters with the same pair of characters in reversed order.
+
+(..)\1
+Response: This expression wil match any two characters that are repeated. 
+
+"(.).\\1.\\1"
+Response: This expression will match any character followed by any character, the original character, any character, then the original character.
+
+"(.)(.)(.).*\\3\\2\\1"
+Response: This expression will match any three characters, followed by zero, then followed by the same three characters in a reverse order.
+
+
+Question 4
+
+Construct regular expressions to match words that:
+
+Start and end with the same character.
+
+Response: "^(.)((.*\\1$)|\\1?$)"
+
+```{r}
+library(stringr)
+str_subset(words, "^(.)((.*\\1$)|\\1?$)")
+```
+
+Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+Response: "([A-Za-z][A-Za-z]).*\\1"
+
+```{r}
+str_subset(words, "([A-Za-z][A-Za-z]).*\\1")
+```
+
+Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+Response: "([a-z]).*\\1.*\\1"
+
+```{r}
+str_subset(words, "([a-z]).*\\1.*\\1")
+```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+[RPubs](https://rpubs.com/blesned/808108)
+
+[GitHub](https://github.com/candrewxs/W3_DATA607.git)
+

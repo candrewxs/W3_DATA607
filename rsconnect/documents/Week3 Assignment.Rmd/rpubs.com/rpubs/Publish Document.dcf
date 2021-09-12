@@ -1,0 +1,11 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/808108/395f0c8ea1b04609b577413a272e76d0
+bundleId: https://api.rpubs.com/api/v1/document/808108/395f0c8ea1b04609b577413a272e76d0
+url: http://rpubs.com/blesned/808108
+when: 1631442097.96317
+lastSyncTime: 1631442097.96317
